@@ -88,6 +88,7 @@ textarea:focus-visible { outline-offset: -3px; }
 .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
 .status.busy { color: #9a6721; }
 .status.invalid { color: #b33b30; }
+.status.idle { color: var(--muted); }
 .preview { position: relative; display: grid; height: clamp(390px, 50vh, 650px); min-height: 0; place-items: center; overflow: auto; padding: 38px; background-color: #f8faf9; background-image: linear-gradient(#dfe5e4 1px, transparent 1px), linear-gradient(90deg, #dfe5e4 1px, transparent 1px); background-size: 24px 24px; }
 .preview::before, .preview::after { content: ""; position: absolute; z-index: 0; background: var(--red); opacity: .8; }
 .preview::before { top: 18px; right: 18px; width: 28px; height: 1px; }

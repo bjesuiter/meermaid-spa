@@ -113,6 +113,7 @@ export default function App() {
               value={source()}
               onInput={(event) => setSource(event.currentTarget.value)}
               spellcheck={false}
+              wrap="off"
             />
           </div>
         </article>
@@ -123,8 +124,23 @@ export default function App() {
               <span class="panel-index">Output</span>
               <h2>Diagram</h2>
             </div>
-            <span class={["status", { busy: isRendering(), invalid: Boolean(error()) }]}>
-              {isRendering() ? "Rendering" : error() ? "Check syntax" : "Live"}
+            <span
+              class={[
+                "status",
+                {
+                  busy: isRendering(),
+                  invalid: Boolean(error()),
+                  idle: !source().trim(),
+                },
+              ]}
+            >
+              {isRendering()
+                ? "Rendering"
+                : !source().trim()
+                  ? "Waiting"
+                  : error()
+                    ? "Check syntax"
+                    : "Live"}
             </span>
           </div>
           <div class="preview" aria-live="polite">
