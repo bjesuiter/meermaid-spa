@@ -78,7 +78,7 @@ export default function App() {
   return (
     <main class="app-shell">
       <header class="masthead">
-        <a class="wordmark" href="/" aria-label="Meermaid home">
+        <a class="wordmark" href={import.meta.env.BASE_URL} aria-label="Meermaid home">
           <span class="mark" aria-hidden="true">M</span>
           <span>Meermaid</span>
         </a>

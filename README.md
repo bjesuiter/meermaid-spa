@@ -2,6 +2,8 @@
 
 A small, browser-only Mermaid diagram renderer built with SolidJS 2.0 RC. Paste Mermaid syntax and see the diagram update as you type.
 
+Live at [bjesuiter.github.io/meermaid-spa](https://bjesuiter.github.io/meermaid-spa/).
+
 ## Run locally
 
 ```sh
