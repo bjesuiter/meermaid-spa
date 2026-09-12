@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:bg": "bgproc start -n meermaid-spa -f -w 30 --keep -- pnpm dev",
+    "dev:status": "bgproc status -n meermaid-spa",
+    "dev:logs": "bgproc logs -n meermaid-spa",
+    "dev:stop": "bgproc stop -n meermaid-spa",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b"
@@ -16,6 +20,7 @@
   },
   "devDependencies": {
     "@solidjs/vite-plugin": "3.0.0-next.35",
+    "bgproc": "0.3.0",
     "typescript": "5.9.2",
     "vite": "8.0.0"
   },
