@@ -79,16 +79,26 @@ export default function App() {
     <main class="app-shell">
       <header class="masthead">
         <a class="wordmark" href={import.meta.env.BASE_URL} aria-label="Meermaid home">
-          <span class="mark" aria-hidden="true">M</span>
+          <span class="mark" aria-hidden="true">
+            <svg viewBox="0 0 29 29" width="29" height="29" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true" tabindex="-1">
+              <path d="M5 17V9l9.5 8L24 9v8M5 21c3-3 6-3 9.5 0s6.5 3 9.5 0" />
+            </svg>
+          </span>
           <span>Meermaid</span>
         </a>
         <p>Mermaid in. Diagram out.</p>
         <a class="github-link" href="https://github.com/bjesuiter/meermaid-spa">
-          Source ↗
+          <img src="https://api.iconify.design/simple-icons/github.svg?color=%23172025" width="16" height="16" alt="" />
+          <span>Source ↗</span>
         </a>
       </header>
 
       <section class="intro" aria-labelledby="page-title">
+        <svg class="sea-horizon" viewBox="0 0 400 110" width="400" height="110" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" aria-hidden="true" tabindex="-1">
+          <circle class="sea-sun" cx="300" cy="43" r="23" />
+          <path d="M14 76c38-12 67-12 108 0s73 12 113 0 80-12 151 0M58 88c30-7 52-6 83 2s67 8 103-1 74-9 109-1M186 101c33 3 51-4 75-5s38 0 53 3" />
+          <path class="sea-birds" d="M178 30q9-8 18 0 9-8 18 0M230 17q6-5 12 0 6-5 12 0" />
+        </svg>
         <p class="eyebrow">A small diagram workbench</p>
         <h1 id="page-title">Turn syntax into shape.</h1>
         <p>Paste Mermaid code on the left. Your diagram appears on the right as you type.</p>
@@ -160,6 +170,15 @@ export default function App() {
           </div>
         </article>
       </section>
+
+      <div class="tideline" aria-hidden="true">
+        <svg viewBox="0 0 1440 76" width="1440" height="76" fill="none" stroke="currentColor" stroke-width="1" preserveAspectRatio="xMidYMid slice" aria-hidden="true" tabindex="-1">
+          <path d="M1 20c120-20 180-20 300 0s180 20 300 0 180-20 300 0 180 20 300 0 180-20 239-9" />
+          <path d="M1 33c120-20 180-20 300 0s180 20 300 0 180-20 300 0 180 20 300 0 180-20 239-9" opacity=".65" />
+          <path d="M1 46c120-20 180-20 300 0s180 20 300 0 180-20 300 0 180 20 300 0 180-20 239-9" opacity=".35" />
+        </svg>
+        <span>Meer <span lang="de">/meːɐ̯/</span> · German for sea</span>
+      </div>
 
       <footer>
         <span>Built with Solid 2.0 RC</span>

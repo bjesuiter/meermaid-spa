@@ -47,14 +47,46 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
 .wordmark { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 600; text-decoration: none; }
 .mark { display: grid; width: 29px; aspect-ratio: 1; place-items: center; background: var(--blue); color: white; }
 .masthead p { margin: 0; color: var(--muted); }
-.github-link { justify-self: end; color: var(--ink); text-underline-offset: 4px; }
+.github-link { display: inline-flex; align-items: center; gap: 7px; justify-self: end; color: var(--ink); text-underline-offset: 4px; }
 
 .intro {
+  position: relative;
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   align-items: end;
   gap: 32px;
   padding: clamp(48px, 7vw, 92px) 0 38px;
+}
+
+.sea-horizon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: clamp(220px, 28vw, 400px);
+  height: auto;
+  color: #6d939e;
+  opacity: .58;
+  pointer-events: none;
+}
+.sea-sun { fill: #e9bb80; fill-opacity: .18; stroke: #b99467; }
+.sea-birds { stroke: #647c84; }
+
+.tideline {
+  position: relative;
+  height: 84px;
+  margin-top: 22px;
+  overflow: hidden;
+  color: #6d939e;
+  pointer-events: none;
+}
+.tideline svg { display: block; width: 100%; height: 62px; opacity: .45; }
+.tideline > span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: var(--muted);
+  font: 10px "IBM Plex Mono", monospace;
+  letter-spacing: .03em;
 }
 
 .eyebrow, .panel-index {
@@ -109,6 +141,7 @@ footer { display: flex; justify-content: space-between; padding-top: 18px; color
   .masthead { grid-template-columns: 1fr auto; }
   .masthead p { display: none; }
   .intro { grid-template-columns: 1fr; padding: 46px 0 30px; }
+  .sea-horizon { top: 0; right: 0; width: 160px; opacity: .45; }
   .intro .eyebrow { grid-column: auto; margin-bottom: -12px; }
   .intro h1 { font-size: clamp(52px, 14vw, 82px); }
   .workbench { grid-template-columns: 1fr; }
@@ -118,6 +151,7 @@ footer { display: flex; justify-content: space-between; padding-top: 18px; color
 
 @media (max-width: 480px) {
   .intro h1 { font-size: 47px; }
+  .sea-horizon { top: 4px; width: 104px; }
   .intro > p:last-child { font-size: 16px; }
   .panel-bar { min-height: 70px; padding: 12px; }
   .editor-wrap, .preview { height: 390px; }
