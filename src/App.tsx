@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import mermaid from "mermaid";
 
 const sample = `flowchart LR
@@ -29,7 +29,55 @@ export default function App() {
   const [error, setError] = createSignal("");
   const [isRendering, setIsRendering] = createSignal(false);
   const [pasteLabel, setPasteLabel] = createSignal("Paste");
+  const [zoom, setZoom] = createSignal(1);
+  const [pan, setPan] = createSignal({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = createSignal(false);
+  const [preview, setPreview] = createSignal<HTMLDivElement>();
   let renderId = 0;
+  let dragStart: { x: number; y: number; panX: number; panY: number } | undefined;
+
+  const clampZoom = (value: number) => Math.min(3, Math.max(0.25, value));
+  const zoomBy = (amount: number) => setZoom((current) => clampZoom(current + amount));
+  const resetView = () => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  };
+
+  const zoomWithWheel = (event: WheelEvent) => {
+    if (!event.metaKey && !event.ctrlKey) return;
+    event.preventDefault();
+    setZoom((current) => clampZoom(current * (event.deltaY < 0 ? 1.1 : 1 / 1.1)));
+  };
+
+  const startPan = (event: PointerEvent) => {
+    if (!event.shiftKey || event.button !== 0) return;
+    event.preventDefault();
+    preview()?.setPointerCapture(event.pointerId);
+    dragStart = { x: event.clientX, y: event.clientY, panX: pan().x, panY: pan().y };
+    setIsPanning(true);
+  };
+
+  const movePan = (event: PointerEvent) => {
+    if (!dragStart) return;
+    setPan({
+      x: dragStart.panX + event.clientX - dragStart.x,
+      y: dragStart.panY + event.clientY - dragStart.y,
+    });
+  };
+
+  const stopPan = () => {
+    dragStart = undefined;
+    setIsPanning(false);
+  };
+
+  createEffect(
+    () => preview(),
+    (element) => {
+      if (!element) return;
+      element.addEventListener("wheel", zoomWithWheel, { passive: false });
+      onCleanup(() => element.removeEventListener("wheel", zoomWithWheel));
+    },
+  );
 
   createEffect(
     () => source().trim(),
@@ -134,33 +182,53 @@ export default function App() {
               <span class="panel-index">Output</span>
               <h2>Diagram</h2>
             </div>
-            <span
-              class={[
-                "status",
-                {
-                  busy: isRendering(),
-                  invalid: Boolean(error()),
-                  idle: !source().trim(),
-                },
-              ]}
-            >
-              {isRendering()
-                ? "Rendering"
-                : !source().trim()
-                  ? "Waiting"
-                  : error()
-                    ? "Check syntax"
-                    : "Live"}
-            </span>
+            <div class="preview-tools">
+              <div class="zoom-controls" aria-label="Diagram zoom controls">
+                <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out" title="Zoom out">−</button>
+                <output aria-label={`Zoom level: ${Math.round(zoom() * 100)} percent`}>{Math.round(zoom() * 100)}%</output>
+                <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in" title="Zoom in">+</button>
+                <button type="button" onClick={resetView} class="reset-view" title="Reset view">Reset</button>
+              </div>
+              <span
+                class={[
+                  "status",
+                  {
+                    busy: isRendering(),
+                    invalid: Boolean(error()),
+                    idle: !source().trim(),
+                  },
+                ]}
+              >
+                {isRendering()
+                  ? "Rendering"
+                  : !source().trim()
+                    ? "Waiting"
+                    : error()
+                      ? "Check syntax"
+                      : "Live"}
+              </span>
+            </div>
           </div>
-          <div class="preview" aria-live="polite">
+          <div
+            class={isPanning() ? "preview panning" : "preview"}
+            aria-live="polite"
+            ref={setPreview}
+            onPointerDown={startPan}
+            onPointerMove={movePan}
+            onPointerUp={stopPan}
+            onPointerCancel={stopPan}
+          >
             {error() ? (
               <div class="error-card" role="alert">
                 <span>Syntax error</span>
                 <p>{error()}</p>
               </div>
             ) : svg() ? (
-              <div class="diagram" innerHTML={svg()} />
+              <div
+                class="diagram"
+                style={{ transform: `translate(${pan().x}px, ${pan().y}px) scale(${zoom()})` }}
+                innerHTML={svg()}
+              />
             ) : (
               <div class="empty-state">
                 <span aria-hidden="true">↗</span>
