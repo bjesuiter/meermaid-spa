@@ -7,6 +7,16 @@ const sample = `flowchart LR
   Render -->|No| Fix[Fix the highlighted issue]
   Fix --> Render`;
 
+const sourceStorageKey = "meermaid.source";
+
+function loadSource() {
+  try {
+    return localStorage.getItem(sourceStorageKey) ?? sample;
+  } catch {
+    return sample;
+  }
+}
+
 mermaid.initialize({
   startOnLoad: false,
   securityLevel: "strict",
@@ -24,7 +34,7 @@ mermaid.initialize({
 });
 
 export default function App() {
-  const [source, setSource] = createSignal(sample);
+  const [source, setSource] = createSignal(loadSource());
   const [svg, setSvg] = createSignal("");
   const [error, setError] = createSignal("");
   const [isRendering, setIsRendering] = createSignal(false);
@@ -76,6 +86,17 @@ export default function App() {
       if (!element) return;
       element.addEventListener("wheel", zoomWithWheel, { passive: false });
       onCleanup(() => element.removeEventListener("wheel", zoomWithWheel));
+    },
+  );
+
+  createEffect(
+    () => source(),
+    (code) => {
+      try {
+        localStorage.setItem(sourceStorageKey, code);
+      } catch {
+        // Rendering still works when browser storage is unavailable.
+      }
     },
   );
 
