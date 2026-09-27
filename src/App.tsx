@@ -8,6 +8,7 @@ const sample = `flowchart LR
   Fix --> Render`;
 
 const sourceStorageKey = "meermaid.source";
+const commitUrl = `https://github.com/bjesuiter/meermaid-spa/tree/${__GIT_COMMIT__}`;
 
 function loadSource() {
   try {
@@ -271,6 +272,7 @@ export default function App() {
 
       <footer>
         <span>Built with Solid 2.0 RC</span>
+        <a class="commit-link" href={commitUrl}>{__GIT_COMMIT__}</a>
         <span>Runs entirely in your browser</span>
       </footer>
     </main>
