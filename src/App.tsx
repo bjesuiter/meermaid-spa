@@ -57,8 +57,10 @@ export default function App() {
 
   const zoomWithWheel = (event: WheelEvent) => {
     if (!event.metaKey && !event.ctrlKey && !event.shiftKey) return;
+    const delta = event.deltaY || (event.shiftKey ? event.deltaX : 0);
+    if (!delta) return;
     event.preventDefault();
-    setZoom((current) => clampZoom(current * (event.deltaY < 0 ? 1.1 : 1 / 1.1)));
+    setZoom((current) => clampZoom(current * (delta < 0 ? 1.1 : 1 / 1.1)));
   };
 
   const startPan = (event: PointerEvent) => {
