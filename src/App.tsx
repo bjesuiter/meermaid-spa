@@ -169,11 +169,7 @@ export default function App() {
     <main class="app-shell">
       <header class="masthead">
         <a class="wordmark" href={import.meta.env.BASE_URL} aria-label="Meermaid home">
-          <span class="mark" aria-hidden="true">
-            <svg viewBox="0 0 29 29" width="29" height="29" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true" tabindex="-1">
-              <path d="M5 17V9l9.5 8L24 9v8M5 21c3-3 6-3 9.5 0s6.5 3 9.5 0" />
-            </svg>
-          </span>
+          <img class="mark" src={`${import.meta.env.BASE_URL}favicon.png`} width="36" height="36" alt="" />
           <span>Meermaid</span>
         </a>
         <p>Mermaid in. Diagram out.</p>

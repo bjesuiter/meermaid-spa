@@ -45,7 +45,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
 }
 
 .wordmark { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 600; text-decoration: none; }
-.mark { display: grid; width: 29px; aspect-ratio: 1; place-items: center; background: var(--blue); color: white; }
+.mark { display: block; width: 36px; height: 36px; flex: none; object-fit: contain; }
 .masthead p { margin: 0; color: var(--muted); }
 .github-link { display: inline-flex; align-items: center; gap: 7px; justify-self: end; color: var(--ink); text-underline-offset: 4px; }
 
