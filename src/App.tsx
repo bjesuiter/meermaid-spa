@@ -43,6 +43,7 @@ export default function App() {
   const [zoom, setZoom] = createSignal(1);
   const [pan, setPan] = createSignal({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = createSignal(false);
+  const [isShiftPressed, setIsShiftPressed] = createSignal(false);
   const [preview, setPreview] = createSignal<HTMLDivElement>();
   let renderId = 0;
   let dragStart: { x: number; y: number; panX: number; panY: number } | undefined;
@@ -55,7 +56,7 @@ export default function App() {
   };
 
   const zoomWithWheel = (event: WheelEvent) => {
-    if (!event.metaKey && !event.ctrlKey) return;
+    if (!event.metaKey && !event.ctrlKey && !event.shiftKey) return;
     event.preventDefault();
     setZoom((current) => clampZoom(current * (event.deltaY < 0 ? 1.1 : 1 / 1.1)));
   };
@@ -87,6 +88,23 @@ export default function App() {
       if (!element) return;
       element.addEventListener("wheel", zoomWithWheel, { passive: false });
       onCleanup(() => element.removeEventListener("wheel", zoomWithWheel));
+    },
+  );
+
+  createEffect(
+    () => undefined,
+    () => {
+      const updateShiftState = (event: KeyboardEvent) => setIsShiftPressed(event.shiftKey);
+      const clearShiftState = () => setIsShiftPressed(false);
+
+      window.addEventListener("keydown", updateShiftState);
+      window.addEventListener("keyup", updateShiftState);
+      window.addEventListener("blur", clearShiftState);
+      onCleanup(() => {
+        window.removeEventListener("keydown", updateShiftState);
+        window.removeEventListener("keyup", updateShiftState);
+        window.removeEventListener("blur", clearShiftState);
+      });
     },
   );
 
@@ -232,7 +250,7 @@ export default function App() {
             </div>
           </div>
           <div
-            class={isPanning() ? "preview panning" : "preview"}
+            class={`preview${isShiftPressed() ? " shift-pan" : ""}${isPanning() ? " panning" : ""}`}
             aria-live="polite"
             ref={setPreview}
             onPointerDown={startPan}
